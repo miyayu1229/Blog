@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
+    protected $policies = [
+        'App\Models\Article' => 'App\Policies\ArticlePolicy',
+    ];
     /**
      * Register any application services.
      *

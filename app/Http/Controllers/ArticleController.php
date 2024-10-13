@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
@@ -15,7 +18,7 @@ class ArticleController extends Controller
     public function index()
     {
         //記事の表示
-        $articles = Article::all();
+        $articles = Article::orderBy('created_at', 'desc')->paginate(10);
         $data = ['articles' => $articles];
         return view('articles.index', $data);
     }
@@ -116,5 +119,16 @@ class ArticleController extends Controller
         $this->authorize($article);
         $article->delete();
         return redirect(route('articles.index'));
+    }
+
+    /**
+     * ブックマークした記事一覧取得
+     */
+    public function bookmarkArticles(): View
+    {
+        $user = Auth::user();
+        $articles = $user->bookmarkArticles()->orderBy('created_at', 'desc')->paginate(10);
+        $data = ['articles' => $articles];
+        return view('articles.bookmarks', $data);
     }
 }

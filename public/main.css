@@ -92,3 +92,11 @@ ul.alart {
     display: flex;
     justify-content: space-between;
 }
+.welcome {
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 6px;
+    background: #34495e;
+    text-align: center;
+    color: #fff;
+}

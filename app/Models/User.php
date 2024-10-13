@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -42,8 +44,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function articles()
+    public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    public function bookmarkArticles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'bookmarks')->withTimestamps(); // withTimestampsでpivotテーブルにタイムスタンプも含まれる？
+    }
+
+    public function isBookmark(int $articleId): bool
+    {
+        return $this->bookmarks()->where('article_id', $articleId)->exists();
     }
 }

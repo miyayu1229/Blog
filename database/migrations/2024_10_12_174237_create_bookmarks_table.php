@@ -13,8 +13,13 @@ class CreateBookmarksTable extends Migration
      */
     public function up()
     {
-        Schema::table('bookmarks', function (Blueprint $table) {
-            //
+        Schema::create('bookmarks', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('article_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
+
+            $table->unique(['user_id', 'article_id']);
         });
     }
 
@@ -26,7 +31,7 @@ class CreateBookmarksTable extends Migration
     public function down()
     {
         Schema::table('bookmarks', function (Blueprint $table) {
-            //
+            Schema::dropIfExists('bookmarks');
         });
     }
 }

@@ -130,5 +130,6 @@ class ArticleController extends Controller
         $articles = $user->bookmarkArticles()->orderBy('created_at', 'desc')->paginate(10);
         $data = ['articles' => $articles];
         return view('articles.bookmarks', $data);
+        
     }
 }
